@@ -29,23 +29,17 @@ REQUIREMENTS                                       *tig-explorer-requirements*
 ==============================================================================
 INSTALL                                                 *tig-explorer-install*
 
-By vim-plug: >
+By vim-plug:
+
     Plug 'iberianpig/tig-explorer.vim'
-<
 
-By NeoBundle: >
-    NeoBundle 'iberianpig/tig-explorer.vim'
-<
+ If you use Neovim, you have to add the dependency to the plugin bclose.vim:
 
-If you use Neovim, you have to add the dependency to the plugin bclose.vim:
+By vim-plug:
 
-By vim-plug: >
     Plug 'rbgrouleff/bclose.vim'
-<
+    (挪到我的~/cfg/nvim/plugin了)
 
-By NeoBundle: >
-    NeoBundle 'rbgrouleff/bclose.vim'
-<
 
 ==============================================================================
 COMMANDS                                               *tig-explorer-commands*
@@ -92,10 +86,10 @@ KEYMAPS                                                 *tig-explorer-keymaps*
 
 Following commands are available on tig launched from tig-explorer
 
-e, <Ctrl-o>: edit on existing tab
-<Ctrl-t>   : edit on new tab
-<Ctrl-s>   : edit with split window
-<Ctrl-v>   : edit with vsplit window
+e, <ctrl-o>: edit on existing tab
+<ctrl-t>   : edit on new tab
+<ctrl-s>   : edit with split window
+<ctrl-v>   : edit with vsplit window
 
 <ESC> o: open with commit on existing tab
 <ESC> t: open with commit on new tab
@@ -106,23 +100,24 @@ e, <Ctrl-o>: edit on existing tab
  version of the file corresponding to this commit will be open instead of the
  version in the working directory. Split versions will open the two buffer in
  diff mode.
- 
+
 ==============================================================================
 CUSTOMIZE                                             *tig-explorer-customize*
 
 Keymaps can be cusotmized by following variables.
 
-Following keymap is defined as defaut >
+Following keymap is defined as defaut
+
     let g:tig_explorer_keymap_edit_e  = 'e'
     let g:tig_explorer_keymap_edit    = '<C-o>'
     let g:tig_explorer_keymap_tabedit = '<C-t>'
     let g:tig_explorer_keymap_split   = '<C-s>'
     let g:tig_explorer_keymap_vsplit  = '<C-v>'
-<
+
 
 And you can add following script to ~/.vimrc
 
->
+
     " open tig with current file
     nnoremap <Leader>T :TigOpenCurrentFile<CR>
 
@@ -143,20 +138,21 @@ And you can add following script to ~/.vimrc
 
     " open tig blame with current file
     nnoremap <Leader>b :TigBlame<CR>
-<
+
 
 By default tig-explorer will use the builtin terminal if available.
 To force launching tig-explorer as shell command you can add the following to
 ~/.vimrc
 
->
+
     " don't use builtin terminal
     let g:tig_explorer_use_builtin_term=0
-<
+
 
 ==============================================================================
 SUPPORT                                                 *tig-explorer-support*
 
 https://www.patreon.com/iberianpig
 
-vim:textwidth=78:tabstop=4:shiftwidth=4:expandtab:filetype=help:norl:
+DIY_again
+DIY_2  vim:ft=help:
