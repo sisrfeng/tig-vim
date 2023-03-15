@@ -1,41 +1,38 @@
-"=============================================================================
-" File: tig_explorer.vim
 " Author: iberianpig
 " Created: 2017-04-03
-"=============================================================================
 
 scriptencoding utf-8
 
 if exists('g:loaded_tig_explorer')
     finish
-endif
+en
 let g:loaded_tig_explorer = 1
 
 let s:save_cpo = &cpoptions
 set cpoptions&vim
 
-command! -nargs=? Tig
+com!  -nargs=? Tig
       \  call tig_explorer#open(<q-args>)
 
-command! TigOpenCurrentFile
+com!  TigOpenCurrentFile
       \  call tig_explorer#open_current_file()
 
-command! TigOpenProjectRootDir
+com!  TigOpenProjectRootDir
       \  call tig_explorer#open_project_root_dir()
 
-command! -nargs=? TigGrep
+com!  -nargs=? TigGrep
       \  call tig_explorer#grep(<q-args>)
 
-command! TigBlame
+com!  TigBlame
       \  call tig_explorer#blame()
 
-command! TigGrepResume
+com!  TigGrepResume
       \  call tig_explorer#grep_resume()
 
-command! TigStatus
+com!  TigStatus
       \  call tig_explorer#status()
 
-command! -bang -nargs=* TigOpenFileWithCommit
+com!  -bang -nargs=* TigOpenFileWithCommit
       \ call tig_explorer#open_file_with_commit("<bang>",<q-mods>,<f-args>)
 
 let &cpoptions = s:save_cpo

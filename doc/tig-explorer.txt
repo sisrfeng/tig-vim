@@ -26,6 +26,61 @@ REQUIREMENTS                                       *tig-explorer-requirements*
 
 - tig (https://github.com/jonas/tig)
 
+
+==========================
+对比另一个作者的简单版:
+
+    "\ config:
+        if !exists('g:tig_executable')
+            let g:tig_executable = 'tig'
+        en
+
+        if !exists('g:tig_default_command')
+            let g:tig_default_command = 'status'
+        en
+
+        if !exists('g:tig_on_exit')
+            let g:tig_on_exit = 'bw!'
+        en
+
+        if !exists('g:tig_open_command')
+            let g:tig_open_command = 'enew'
+        en
+
+    fun! s:tig(bang, ...)
+        let s:callback = {}
+        let current = expand('%')
+        let s:altfile = expand('#')
+
+        fun! s:callback.on_exit(id, status, event)
+            exec g:tig_on_exit
+            if !empty(s:altfile)
+                let @# = s:altfile
+            en
+        endf
+
+        fun! s:tigopen(arg)
+            call termopen(g:tig_executable . ' ' . a:arg, s:callback)
+        endf
+
+        exec g:tig_open_command
+        if a:bang > 0
+            call s:tigopen(current)
+        elseif a:0 > 0
+            call s:tigopen(a:1)
+        el
+            call s:tigopen(g:tig_default_command)
+        en
+        setl  nonumber
+        setl  norelativenumber
+        setl  signcolumn=no
+        setl  filetype=tig
+        startinsert
+    endf
+
+    com!  -bang -nargs=? Tig call s:tig(<bang>0, <f-args>)
+
+
 ==============================================================================
 INSTALL                                                 *tig-explorer-install*
 
@@ -46,60 +101,59 @@ COMMANDS                                               *tig-explorer-commands*
 
 Add following script to ~/.vimrc
 
-TigOpenCurrentFile                                       *:TigOpenCurrentFile*
-    Open tig with current file
+    TigOpenCurrentFile                                       *:TigOpenCurrentFile*
+        Open tig with current file
 
-TigOpenProjectRootDir                                 *:TigOpenProjectRootDir*
-    Open tig with Project root path
+    TigOpenProjectRootDir                                 *:TigOpenProjectRootDir*
+        Open tig with Project root path
 
-TigGrep                                                             *:TigGrep*
-    Open tig grep.
-    And you can pass PATTERN like `:TigGrep (PATTERN)` to grep
-    with the PATTERN.
+    TigGrep                                                             *:TigGrep*
+        Open tig grep.
+        And you can pass PATTERN like `:TigGrep (PATTERN)` to grep  with the PATTERN.
 
-TigGrepResume                                                 *:TigGrepResume*
-    Resume from last grep
+    TigGrepResume                                                 *:TigGrepResume*
+        Resume from last grep
 
-TigBlame                                                           *:TigBlame*
-    Open tig blame with current file
+    TigBlame                                                           *:TigBlame*
+        Open tig blame with current file
 
-TigOpenFileWithCommit
-    Open a file at the given commit.  `:TigOpenWithCommit COMMIT FILE LINEO`
-    All arguments are optional.
-    If FILE contains `%` and `FILE` is contains so commit information.
-    The `%` in the commit will be replaced with the original commit.
+    TigOpenFileWithCommit
+        Open a file at the given commit.  `:TigOpenWithCommit COMMIT FILE LINEO`
+        All arguments are optional.
+        If FILE contains `%` and `FILE` is contains so commit information.
+        The `%` in the commit will be replaced with the original commit.
 
-    For example `:TigOpenWithCommit %~` open the previous version of the
-    current file. This file will be called `HEAD~:file`.
-    Calling `:TigOpenFileWithCommit %~` again will open the previous version
-    of the previous version (`HEAD~~`).
+        For example `:TigOpenWithCommit %~` open the previous version of the
+        current file. This file will be called `HEAD~:file`.
+        Calling `:TigOpenFileWithCommit %~` again will open the previous version
+        of the previous version (`HEAD~~`).
 
-TigOpenFileWithCommit!
-    Like TigOpenFileWithCommit but show the diff between the current buffer
-    and the resulting buffer.
+    TigOpenFileWithCommit!
+        Like TigOpenFileWithCommit but show the diff between the current buffer
+        and the resulting buffer.
 
-    For example, `:vertical TigOpenFileWithCommit! HEAD` set a side by side
-    diff between the current buffer and its HEAD version.
+        For example, `:vertical TigOpenFileWithCommit! HEAD` set a side by side
+        diff between the current buffer and its HEAD version.
 
 ==============================================================================
 KEYMAPS                                                 *tig-explorer-keymaps*
 
-Following commands are available on tig launched from tig-explorer
+    Following commands are available on tig launched from tig-explorer
 
-e, <ctrl-o>: edit on existing tab
-<ctrl-t>   : edit on new tab
-<ctrl-s>   : edit with split window
-<ctrl-v>   : edit with vsplit window
+    e, <ctrl-o>: edit on existing tab
+    <ctrl-t>   : edit on new tab
+    <ctrl-s>   : edit with split window
+    <ctrl-v>   : edit with vsplit window
 
-<ESC> o: open with commit on existing tab
-<ESC> t: open with commit on new tab
-<ESC> v: open with commit with vsplit window
-<ESC> s: open with commit with split window
+    <ESC> o: open with commit on existing tab
+    <ESC> t: open with commit on new tab
+    <ESC> v: open with commit with vsplit window
+    <ESC> s: open with commit with split window
 
- When a commit is available (in main, blame, tree, refs view) view, the
- version of the file corresponding to this commit will be open instead of the
- version in the working directory. Split versions will open the two buffer in
- diff mode.
+    When a commit is available (in main, blame, tree, refs view) view, the
+    version of the file corresponding to this commit will be open instead of the
+    version in the working directory. Split versions will open the two buffer in
+    diff mode.
 
 ==============================================================================
 CUSTOMIZE                                             *tig-explorer-customize*
@@ -116,7 +170,6 @@ Following keymap is defined as defaut
 
 
 And you can add following script to ~/.vimrc
-
 
     " open tig with current file
     nnoremap <Leader>T :TigOpenCurrentFile<CR>
@@ -149,10 +202,7 @@ To force launching tig-explorer as shell command you can add the following to
     let g:tig_explorer_use_builtin_term=0
 
 
-==============================================================================
-SUPPORT                                                 *tig-explorer-support*
 
-https://www.patreon.com/iberianpig
 
 DIY_again
 DIY_2  vim:ft=help:
